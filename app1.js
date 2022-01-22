@@ -44,3 +44,6 @@ app.use(function(req, res){
 // copy fornt and backend file to desktop
 
 // cmd -> heroku -> heroku login -> heroku logs -a "foodapplication-backend" -t
+
+
+// require secrete ko helpers, model and router se comment rkdo

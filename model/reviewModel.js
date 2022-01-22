@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 // auth pass: p5E3DiiCzUdJL
-let { PASSWORD, dbLink } = process.env || require('../secrets');
+let { PASSWORD, dbLink } = process.env //|| require('../secrets');
 // const validator = require('email-validator');
 
 mongoose

@@ -39,11 +39,17 @@ app.use(function(req, res){
     })
 })
 
+// steps
+// 1. see you have all the passwords of razorpay, gmail, ...
+// 2. get all the code of backend such that app1.js is outside of all
+// 3. goto package.json and then in "start" script just do "node app1.js"
+// 4. app1.js ke port ko replace krke process.env likhdo
+// 5. at all require secret file replace it with process.env
+// 6. except secret and node_module file push all code to github in a new repo
+
+// 7. login to heroku and dashboard to create new app
+// 8. heroku dashboard to setting to config vars(all secrets copy) to deploy(github repo) 
+// 9. if error install heroku cli then see at cmd -> heroku -> heroku login -> heroku logs -a "foodapplication-backend" -t
+// 10. Congratulations backend deployed
+
 // cmd to run : node app1.js
-// heroku: dashboard to create new app to 
-// copy fornt and backend file to desktop
-
-// cmd -> heroku -> heroku login -> heroku logs -a "foodapplication-backend" -t
-
-
-// require secrete ko helpers, model and router se comment rkdo

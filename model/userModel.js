@@ -10,6 +10,7 @@ let { PASSWORD, dbLink } = process.env //|| require('../secrets');
 // }
 
 const validator = require('email-validator');
+const bcrypt = require("bcrypt");
 
 mongoose
     .connect(dbLink)
@@ -74,6 +75,9 @@ const userSchema = new mongoose.Schema({
 // this is a hook, save hone se pehle 
 userSchema.pre('save', function (next){
     // do stuff
+    const salt = await bcrypt.genSalt(10);     //more the salt more it will take time to ecrypt
+    this.password = await bcrypt.hash(this.password, salt);   //converts pass into anonymous text
+    
     this.confirmPassword = undefined;
     // password ko encrypt bhi krlo
     next();
@@ -81,7 +85,9 @@ userSchema.pre('save', function (next){
 
 //document method
 userSchema.methods.resetHandler = function (password, confirmPassword){
-    this.password = password;
+    const salt = await bcrypt.genSalt(10);     //more the salt more it will take time to ecrypt
+    this.password = await bcrypt.hash(this.password, salt);   //converts pass into anonymous text
+    
     this.confirmPassword = confirmPassword;
     this.token = undefined;
 }

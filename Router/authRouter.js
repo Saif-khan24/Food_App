@@ -1,6 +1,7 @@
 // dependencies
 const express = require('express')
 const jwt = require('jsonwebtoken');
+const bcrypt = require("bcrypt");
 const {JWT_SECRET} = process.env //|| require('../secrets');
 const userModel = require('../model/userModel');
 //router
@@ -23,7 +24,8 @@ async function loginUser(req, res){
         let user = await userModel.findOne({ email })
         if(user){
             //password
-            if(user.password == password){
+            let areEqual = await bcrypt.compare(password, user.password);   //to be safe from pass theft => save krte time encrypt and compare krte time decrypt krlo
+            if(areEqual){
                 let token = jwt.sign({id: user['_id']});     // JWT_SECRET, {httpOnly: true});
                 res.cookie('JWT', token)
                 res.status(200).json({
@@ -126,38 +128,8 @@ async function resetPassword(req, res){
         })
     }
 }
-
-    // function temploginUser(req, res){
-    //     let {email, password} = req.body;
-    //     let obj = content.find((obj)=>{
-    //         return obj.email == email
-    //     })
-        
-    //     if(!obj){
-    //         return res.status(404).json({
-    //             message: "user not found"
-    //         })
-    //     }
     
-    //     if(obj.password == password){
-    //         var token =  jwt.sign({ email : obj.email}, JWT_SECRET);   //first time cookie
-    //         res.cookie('JWT', token);   //header set kra h
-    //         console.log(token);
-    
-    //         // res ki body bheji 
-    //         res.status(200).json({
-    //             message: "user logged in",
-    //             user: obj
-    //         })
-    //     }
-    //     else{
-    //         res.status(422).json({
-    //             message: "email or password doesn't match"
-    //         })
-    //     }
-    // }
-    
-    async function signupUser(req, res){
+async function signupUser(req, res){
         try{
             let newUser = await userModel.create(req.body)
             res.status(200).json({
@@ -187,7 +159,38 @@ async function resetPassword(req, res){
         //         message: "password and confirm password do not match"
         //     })
         // }
-    }
+}
 
 
 module.exports = authRouter;
+
+// function temploginUser(req, res){
+    //     let {email, password} = req.body;
+    //     let obj = content.find((obj)=>{
+    //         return obj.email == email
+    //     })
+        
+    //     if(!obj){
+    //         return res.status(404).json({
+    //             message: "user not found"
+    //         })
+    //     }
+    
+    //     if(obj.password == password){
+    //         var token =  jwt.sign({ email : obj.email}, JWT_SECRET);   //first time cookie
+    //         res.cookie('JWT', token);   //header set kra h
+    //         console.log(token);
+    
+    //         // res ki body bheji 
+    //         res.status(200).json({
+    //             message: "user logged in",
+    //             user: obj
+    //         })
+    //     }
+    //     else{
+    //         res.status(422).json({
+    //             message: "email or password doesn't match"
+    //         })
+    //     }
+    // }
+    
